@@ -47,7 +47,7 @@ fi
 true
 SCRIPT_NAME="Nextcloud Install Script"
 # shellcheck source=lib.sh
-. <(curl -sL https://raw.githubusercontent.com/nextcloud/vm/master/lib.sh)
+. <(curl -sL https://raw.githubusercontent.com/fooobart/vm/master/lib.sh)
 
 # Check if dpkg or apt is running
 is_process_running apt
@@ -83,7 +83,7 @@ fi
 # shellcheck disable=2034,2059
 true
 # shellcheck source=lib.sh
-. <(curl -sL https://raw.githubusercontent.com/nextcloud/vm/master/lib.sh)
+. <(curl -sL https://raw.githubusercontent.com/fooobart/vm/master/lib.sh)
 
 # Check for errors + debug code and abort if something isn't right
 # 1 = ON
@@ -591,7 +591,7 @@ echo "apc.preload_path"
 restart_webserver
 fi
 
-# Fix https://github.com/nextcloud/vm/issues/714
+# Fix https://github.com/fooobrt/vm/issues/714
 print_text_in_color "$ICyan" "Optimizing Nextcloud..."
 yes | occ_command db:convert-filecache-bigint
 occ_command db:add-missing-indices
