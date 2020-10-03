@@ -13,10 +13,13 @@ SCRIPT_NAME="Add CLI User"
 DEBUG=0
 debug_mode
 
+# FFT: Added configuration of AWS toolchain
 AWS_ACCESS_KEY_ID=$(cat ~/.AWS_ACCESS_KEY_ID)
 AWS_SECRET_ACCESS_KEY=$(cat ~/.AWS_SECRET_ACCESS_KEY)
 AWS_DEFAULT_REGION=$(cat ~/.AWS_DEFAULT_REGION)
-
+aws configure set AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
+aws configure set AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+aws configure set default.region $AWS_DEFAULT_REGION
 
 AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/)
 LINUX_USER_NAME=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`LINUX_USER_NAME`].Value' --output text)
