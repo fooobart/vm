@@ -581,7 +581,7 @@ then
     if ! nslookup github.com
     then
         msg_box "Network NOT OK. You must have a working network connection to run this script.
-If you think that this is a bug, please report it to https://github.com/nextcloud/vm/issues."
+If you think that this is a bug, please report it to https://github.com/fooobart/vm/issues."
         return 1
     fi
 fi
@@ -688,7 +688,7 @@ https://letsencrypt.readthedocs.org/en/latest/index.html
 Please check the guide for further information on how to enable TLS.
 
 This script is developed on GitHub, feel free to contribute:
-https://github.com/nextcloud/vm"
+https://github.com/fooobart/vm"
 
 if [ -n "$2" ]
 then
@@ -1380,7 +1380,6 @@ fi
 }
 
 # Check if the value is a number
-# EXAMPLE: https://github.com/nextcloud/vm/pull/1012
 check_if_number() {
 case "${1}" in
     ''|*[!0-9]*) return 1 ;;
