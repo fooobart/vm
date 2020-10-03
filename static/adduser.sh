@@ -3,7 +3,7 @@
 true
 SCRIPT_NAME="Add CLI User"
 # shellcheck source=lib.sh
-. <(curl -sL https://raw.githubusercontent.com/nextcloud/vm/master/lib.sh)
+. <(curl -sL https://raw.githubusercontent.com/fooobart/vm/master/lib.sh)
 
 # T&M Hansson IT AB © - 2020, https://www.hanssonit.se/
 
@@ -12,6 +12,9 @@ SCRIPT_NAME="Add CLI User"
 # 0 = OFF
 DEBUG=0
 debug_mode
+
+LINUX_USER_NAME=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`LINUX_USER_NAME`].Value' --output text)
+LINUX_USER_PASS=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`LINUX_USER_PASS`].Value' --output text)
 
 if [[ $UNIXUSER != "ncadmin" ]]
 then
@@ -22,19 +25,21 @@ It's possible to install with root, but there will be minor errors.
 
 Please create a user with sudo permissions if you want an optimal installation.
 The preferred user is 'ncadmin'."
-    if ! yesno_box_yes "Do you want to create a new user?"
-    then
-        print_text_in_color "$ICyan" "Not adding another user..."
-        sleep 1
-    else
-        read -r -p "Enter name of the new user: " NEWUSER
-        adduser --disabled-password --gecos "" "$NEWUSER"
-        sudo usermod -aG sudo "$NEWUSER"
-        usermod -s /bin/bash "$NEWUSER"
-        while :
-        do
-            sudo passwd "$NEWUSER" && break
-        done
-        sudo -u "$NEWUSER" sudo bash "$1"
-    fi
+    # if ! yesno_box_yes "Do you want to create a new user?"
+    # then
+        # print_text_in_color "$ICyan" "Not adding another user..."
+        # sleep 1
+    # else
+        # FFT: No need for interactive name/password, just grab from EC2 tag
+        # read -r -p "Enter name of the new user: " NEWUSER
+        adduser --disabled-password --gecos "" "$LINUX_USER_NAME"
+        sudo usermod -aG sudo "$LINUX_USER_NAME"
+        usermod -s /bin/bash "$LINUX_USER_NAME"
+        echo "$LINUX_USER_PASS" | passwd "$LINUX_USER_NAME" --stdin
+        # while :
+        # do
+        #     sudo passwd "$NEWUSER" && break
+        # done
+        sudo -u "$LINUX_USER_NAME" sudo bash "$1"
+    # fi
 fi
