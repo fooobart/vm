@@ -6,7 +6,7 @@
 echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 
 # FFT: Install my favourite essential tools on the VM
-apt install aptitude emacs links unzip -y
+sudo apt install aptitude emacs links unzip -y
 
 # FFT: Install AWS CLI toolchain
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
