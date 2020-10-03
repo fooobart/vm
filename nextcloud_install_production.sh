@@ -32,7 +32,7 @@ NAME_TAG=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,
 aws route53 change-resource-record-sets --hosted-zone-id $ZONE_TAG --change-batch '{"Changes":[{"Action":"UPSERT","ResourceRecordSet":{"Name":"'$NAME_TAG'","Type":"A","TTL":300,"ResourceRecords":[{"Value":"'$MY_IP'"}]}}]}'
 ROUTE53_UPDATE_IP
 
-chmod +x /var/lib/cloud/scripts/per-boot/update_route53_address.sh
+sudo chmod +x /var/lib/cloud/scripts/per-boot/update_route53_address.sh
 
 # Install curl if not existing
 if [ "$(dpkg-query -W -f='${Status}' "curl" 2>/dev/null | grep -c "ok installed")" == "1" ]
