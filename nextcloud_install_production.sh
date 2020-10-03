@@ -21,13 +21,16 @@ sudo rm -f ./awscliv2.zip
 sudo rm -rf ./aws
 echo -n "Enter your AWS_ACCESS_KEY_ID [ENTER]: "
 read AWS_ACCESS_KEY_ID
+echo $AWS_ACCESS_KEY_ID > ~/.AWS_ACCESS_KEY_ID
 echo -n "Enter your AWS_SECRET_ACCESS_KEY [ENTER]: "
 read AWS_SECRET_ACCESS_KEY
+echo $AWS_SECRET_ACCESS_KEY > ~/.AWS_SECRET_ACCESS_KEY
 echo -n "Enter your DEFAULT_REGION (e.g. eu-central-1) [ENTER]: "
-read DEFAULT_REGION
+read AWS_DEFAULT_REGION
+echo $AWS_DEFAULT_REGION > ~/.AWS_DEFAULT_REGION
 aws configure set AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
 aws configure set AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
-aws configure set default.region $DEFAULT_REGION
+aws configure set default.region $AWS_DEFAULT_REGION
 
 # FFT: Add Amazon AWS Route53 update script for EC2 startup
 cat << ROUTE53_UPDATE_IP > "/var/lib/cloud/scripts/per-boot/update_route53_address.sh"
