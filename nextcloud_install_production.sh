@@ -5,6 +5,9 @@
 # Prefer IPv4 for apt
 echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 
+# FFT: Install my favourite essential tools on the VM
+apt install aptitude emacs links unzip
+
 # FFT: Install AWS CLI toolchain
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
@@ -30,9 +33,6 @@ aws route53 change-resource-record-sets --hosted-zone-id $ZONE_TAG --change-batc
 ROUTE53_UPDATE_IP
 
 chmod +x /var/lib/cloud/scripts/per-boot/update_route53_address.sh
-
-# FFT: Install my favourite essential tools on the VM
-apt install aptitude emacs links
 
 # Install curl if not existing
 if [ "$(dpkg-query -W -f='${Status}' "curl" 2>/dev/null | grep -c "ok installed")" == "1" ]
