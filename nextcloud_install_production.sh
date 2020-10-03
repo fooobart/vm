@@ -8,22 +8,30 @@ echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 # FFT: Install my favourite essential tools on the VM
 sudo apt install aptitude emacs links unzip -y
 
+# Extract information about the Instance
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id/)
+AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/)
+MY_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4/)
+
 # FFT: Install AWS CLI toolchain
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
 sudo rm -f ./awscliv2.zip
 sudo rm -rf ./aws
-aws configure
+echo -n "Enter your AWS_ACCESS_KEY_ID [ENTER]: "
+read AWS_ACCESS_KEY_ID
+echo -n "Enter your AWS_SECRET_ACCESS_KEY [ENTER]: "
+read AWS_SECRET_ACCESS_KEY
+echo -n "Enter your DEFAULT_REGION (e.g. eu-central-1) [ENTER]: "
+read DEFAULT_REGION
+aws configure set AWS_ACCESS_KEY_ID $AWS_ACCESS_KEY_ID
+aws configure set AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
+aws configure set default.region $DEFAULT_REGION
 
 # FFT: Add Amazon AWS Route53 update script for EC2 startup
 cat << ROUTE53_UPDATE_IP > "/var/lib/cloud/scripts/per-boot/update_route53_address.sh"
 #!/bin/bash
-
-# Extract information about the Instance
-INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id/)
-AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/)
-MY_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4/)
 
 # Extract tags associated with instance
 ZONE_TAG=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`AUTO_DNS_ZONE`].Value' --output text)
