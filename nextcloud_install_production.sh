@@ -33,7 +33,8 @@ aws configure set AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
 aws configure set default.region $AWS_DEFAULT_REGION
 
 # FFT: Add Amazon AWS Route53 update script for EC2 startup
-cat << ROUTE53_UPDATE_IP > "/var/lib/cloud/scripts/per-boot/update_route53_address.sh"
+sudo rm -f /var/lib/cloud/scripts/per-boot/update_route53_address.sh
+sudo cat << ROUTE53_UPDATE_IP > "/var/lib/cloud/scripts/per-boot/update_route53_address.sh"
 #!/bin/bash
 
 # Extract tags associated with instance
