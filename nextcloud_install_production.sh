@@ -14,6 +14,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 sudo rm -f ./awscliv2.zip
 sudo rm -rf ./aws
+aws configure
 
 # FFT: Add Amazon AWS Route53 update script for EC2 startup
 cat << ROUTE53_UPDATE_IP > "/var/lib/cloud/scripts/per-boot/update_route53_address.sh"
