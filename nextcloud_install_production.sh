@@ -11,7 +11,11 @@ sudo apt install aptitude emacs links unzip -y
 # FFT: Install AWS CLI toolchain
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
-sudo ./aws/install
+if [ -d "/usr/local/aws-cli/v2/current" ]; then
+    sudo ./aws/install
+else
+    sudo ./aws/install --update  
+fi
 sudo rm -f ./awscliv2.zip
 sudo rm -rf ./aws
 
