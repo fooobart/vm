@@ -5,6 +5,9 @@
 # Prefer IPv4 for apt
 echo 'Acquire::ForceIPv4 "true";' >> /etc/apt/apt.conf.d/99force-ipv4
 
+# FFT: Install my favourite essential tools on the VM
+apt install aptitude emacs links
+
 # Install curl if not existing
 if [ "$(dpkg-query -W -f='${Status}' "curl" 2>/dev/null | grep -c "ok installed")" == "1" ]
 then
@@ -66,7 +69,8 @@ debug_mode
 root_check
 
 # Test RAM size (2GB min) + CPUs (min 1)
-ram_check 2 Nextcloud
+# FFT: Disabled RAM check for testing
+# ram_check 2 Nextcloud
 cpu_check 1 Nextcloud
 
 # Download needed libraries before execution of the first script
@@ -78,11 +82,12 @@ download_script STATIC fetch_lib
 run_script ADDONS locales
 
 # Offer to use archive.ubuntu.com
-msg_box "Your current download repository is $REPO"
-if yesno_box_yes "Do you want use http://archive.ubuntu.com as repository for this server?"
-then
-    sed -i "s|http://.*archive.ubuntu.com|http://archive.ubuntu.com|g" /etc/apt/sources.list
-fi
+# FFT: Not needed right now
+# msg_box "Your current download repository is $REPO"
+# if yesno_box_yes "Do you want use http://archive.ubuntu.com as repository for this server?"
+# then
+#    sed -i "s|http://.*archive.ubuntu.com|http://archive.ubuntu.com|g" /etc/apt/sources.list
+# fi
 
 # Create new current user
 download_script STATIC adduser
@@ -255,17 +260,19 @@ done
 # Install PostgreSQL
 # sudo add-apt-repository "deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main"
 # curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-apt update -q4 & spinner_loading
-apt install postgresql -y
+# FFT: Disabled PostgreSQL as we'll use a remote MySQL database
+# apt update -q4 & spinner_loading
+# apt install postgresql -y
 
 # Create DB
-cd /tmp
-sudo -u postgres psql <<END
-CREATE USER $NCUSER WITH PASSWORD '$PGDB_PASS';
-CREATE DATABASE nextcloud_db WITH OWNER $NCUSER TEMPLATE template0 ENCODING 'UTF8';
-END
-print_text_in_color "$ICyan" "PostgreSQL password: $PGDB_PASS"
-systemctl restart postgresql.service
+# FFT: Don't create a DB, use an existing one
+# cd /tmp
+# sudo -u postgres psql <<END
+# CREATE USER $NCUSER WITH PASSWORD '$PGDB_PASS';
+# CREATE DATABASE nextcloud_db WITH OWNER $NCUSER TEMPLATE template0 ENCODING 'UTF8';
+# END
+# print_text_in_color "$ICyan" "PostgreSQL password: $PGDB_PASS"
+# systemctl restart postgresql.service
 
 # Install Apache
 check_command apt install apache2 -y
@@ -477,16 +484,17 @@ sed -i "s|;emergency_restart_interval.*|emergency_restart_interval = 1m|g" /etc/
 sed -i "s|;process_control_timeout.*|process_control_timeout = 10|g" /etc/php/"$PHPVER"/fpm/php-fpm.conf
 
 # PostgreSQL values for PHP (https://docs.nextcloud.com/server/latest/admin_manual/configuration_database/linux_database_configuration.html#postgresql-database)
-{
-echo ""
-echo "[PostgresSQL]"
-echo "pgsql.allow_persistent = On"
-echo "pgsql.auto_reset_persistent = Off"
-echo "pgsql.max_persistent = -1"
-echo "pgsql.max_links = -1"
-echo "pgsql.ignore_notice = 0"
-echo "pgsql.log_notice = 0"
-} >> "$PHP_FPM_DIR"/conf.d/20-pdo_pgsql.ini
+# FFT: We're not using PostgreSQL right now
+# {
+# echo ""
+# echo "[PostgresSQL]"
+# echo "pgsql.allow_persistent = On"
+# echo "pgsql.auto_reset_persistent = Off"
+# echo "pgsql.max_persistent = -1"
+# echo "pgsql.max_links = -1"
+# echo "pgsql.ignore_notice = 0"
+# echo "pgsql.log_notice = 0"
+# } >> "$PHP_FPM_DIR"/conf.d/20-pdo_pgsql.ini
 
 # Install Redis (distrubuted cache)
 run_script ADDONS redis-server-ubuntu
