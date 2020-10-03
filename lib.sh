@@ -80,7 +80,7 @@ CHECKLIST_GUIDE="Navigate with the [ARROW] keys and (de)select with the [SPACE] 
 MENU_GUIDE="Navigate with the [ARROW] keys and confirm by pressing [ENTER]"
 RUN_LATER_GUIDE="You can view this script later by running 'sudo bash $SCRIPTS/menu.sh'"
 # Repo
-GITHUB_REPO="https://raw.githubusercontent.com/nextcloud/vm/master"
+GITHUB_REPO="https://raw.githubusercontent.com/fooobart/vm/master"
 STATIC="$GITHUB_REPO/static"
 LETS_ENC="$GITHUB_REPO/lets-encrypt"
 APP="$GITHUB_REPO/apps"
@@ -92,7 +92,7 @@ NETWORK="$GITHUB_REPO/network"
 VAGRANT_DIR="$GITHUB_REPO/vagrant"
 NOT_SUPPORTED="$GITHUB_REPO/not-supported"
 NCREPO="https://download.nextcloud.com/server/releases"
-ISSUES="https://github.com/nextcloud/vm/issues"
+ISSUES="https://github.com/fooobart/vm/issues"
 # User information
 NCPASS=nextcloud
 NCUSER=ncadmin
