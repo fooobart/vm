@@ -6,7 +6,7 @@ true
 ## VARIABLES
 
 # Dirs
-SCRIPTS=/var/scripts
+SCRIPTS=static
 NCPATH=/var/www/nextcloud
 HTML=/var/www
 POOLNAME=ncdata

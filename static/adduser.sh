@@ -25,9 +25,7 @@ AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone
 INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id/)
 LINUX_USER_NAME=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`LINUX_USER_NAME`].Value' --output text)
 LINUX_USER_PASS=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`LINUX_USER_PASS`].Value' --output text)
-echo "Trying to setup Linux user '$LINUX_USER_NAME' with password '$LINUX_USER_PASS'"
-echo "$Availability zone: $AZ"
-echo "Instance: $INSTANCE_ID"
+echo "Trying to setup Linux user $LINUX_USER_NAME with password $LINUX_USER_PASS"
 
 # if [[ $UNIXUSER != "ncadmin" ]]
 # then
@@ -45,15 +43,14 @@ echo "Instance: $INSTANCE_ID"
     # else
         # FFT: No need for interactive name/password, just grab from EC2 tag
         # read -r -p "Enter name of the new user: " NEWUSER
-    if [[ $(getent passwd "$LINUX_USER_NAME") = "" ]]; then
-        sudo adduser --disabled-password --gecos "" "$LINUX_USER_NAME"
+        adduser --disabled-password --gecos "" "$LINUX_USER_NAME"
         sudo usermod -aG sudo "$LINUX_USER_NAME"
-        sudo usermod -s /bin/bash "$LINUX_USER_NAME"
-	echo "$LINUX_USER_NAME:$LINUX_USER_PASS" | sudo chpasswd
+        usermod -s /bin/bash "$LINUX_USER_NAME"
+        echo "$LINUX_USER_PASS" | passwd "$LINUX_USER_NAME" --stdin
         # while :
         # do
         #     sudo passwd "$NEWUSER" && break
         # done
         sudo -u "$LINUX_USER_NAME" sudo bash "$1"
-     fi
+    # fi
 # fi

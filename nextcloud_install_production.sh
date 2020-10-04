@@ -60,7 +60,7 @@ fi
 true
 SCRIPT_NAME="Nextcloud Install Script"
 # shellcheck source=lib.sh
-. <(curl -sL https://raw.githubusercontent.com/fooobart/vm/master/lib.sh)
+. lib.sh
 
 # Check if dpkg or apt is running
 is_process_running apt
@@ -96,7 +96,7 @@ fi
 # shellcheck disable=2034,2059
 true
 # shellcheck source=lib.sh
-. <(curl -sL https://raw.githubusercontent.com/fooobart/vm/master/lib.sh)
+. lib.sh
 
 # Check for errors + debug code and abort if something isn't right
 # 1 = ON
@@ -114,8 +114,8 @@ cpu_check 1 Nextcloud
 
 # Download needed libraries before execution of the first script
 mkdir -p "$SCRIPTS"
-download_script GITHUB_REPO lib
-download_script STATIC fetch_lib
+#download_script GITHUB_REPO lib
+#download_script STATIC fetch_lib
 
 # Set locales
 run_script ADDONS locales
@@ -129,7 +129,7 @@ run_script ADDONS locales
 # fi
 
 # Create new current user
-download_script STATIC adduser
+#download_script STATIC adduser
 bash $SCRIPTS/adduser.sh "nextcloud_install_production.sh"
 rm -f $SCRIPTS/adduser.sh
 
@@ -431,7 +431,7 @@ tar -xjf "$HTML/$STABLEVERSION.tar.bz2" -C "$HTML" & spinner_loading
 rm "$HTML/$STABLEVERSION.tar.bz2"
 
 # Secure permissions
-download_script STATIC setup_secure_permissions_nextcloud
+#download_script STATIC setup_secure_permissions_nextcloud
 bash $SECURE & spinner_loading
 
 # Install Nextcloud
@@ -458,7 +458,7 @@ crontab -u www-data -l | { cat; echo "*/5  *  *  *  * php -f $NCPATH/cron.php > 
 occ_command config:system:set upgrade.disable-web --value="true"
 occ_command config:app:set updatenotification notify_groups --value="[]"
 print_text_in_color "$ICyan" "Configuring update notifications specific for this server..."
-download_script STATIC updatenotification
+#download_script STATIC updatenotification
 check_command chmod +x "$SCRIPTS"/updatenotification.sh
 crontab -u root -l | { cat; echo "59 $AUT_UPDATES_TIME * * * $SCRIPTS/updatenotification.sh > /dev/null 2>&1"; } | crontab -u root -
 
@@ -879,10 +879,10 @@ fi
 # Set permissions for ncadmin in the change scripts
 
 # Get needed scripts for first bootup
-download_script GITHUB_REPO nextcloud-startup-script
-download_script STATIC instruction
-download_script STATIC history
-download_script NETWORK static_ip
+#download_script GITHUB_REPO nextcloud-startup-script
+#download_script STATIC instruction
+#download_script STATIC history
+#download_script NETWORK static_ip
 
 # Make $SCRIPTS excutable
 chmod +x -R "$SCRIPTS"
