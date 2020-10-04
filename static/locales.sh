@@ -6,7 +6,7 @@
 true
 SCRIPT_NAME="Locales"
 # shellcheck source=lib.sh
-. ../lib.sh
+. lib.sh
 
 # Must be root
 root_check
