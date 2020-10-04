@@ -22,6 +22,7 @@ aws configure set AWS_SECRET_ACCESS_KEY $AWS_SECRET_ACCESS_KEY
 aws configure set default.region $AWS_DEFAULT_REGION
 
 AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/)
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id/)
 LINUX_USER_NAME=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`LINUX_USER_NAME`].Value' --output text)
 LINUX_USER_PASS=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=${INSTANCE_ID}" --query 'Tags[?Key==`LINUX_USER_PASS`].Value' --output text)
 echo "Trying to setup Linux user $LINUX_USER_NAME with password $LINUX_USER_PASS"
