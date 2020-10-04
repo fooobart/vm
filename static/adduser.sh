@@ -43,14 +43,15 @@ echo "Trying to setup Linux user $LINUX_USER_NAME with password $LINUX_USER_PASS
     # else
         # FFT: No need for interactive name/password, just grab from EC2 tag
         # read -r -p "Enter name of the new user: " NEWUSER
-        adduser --disabled-password --gecos "" "$LINUX_USER_NAME"
+    if [ $(getent passwd "$LINUX_USER_NAME") == "" ] ; then
+        sudo adduser --disabled-password --gecos "" "$LINUX_USER_NAME"
         sudo usermod -aG sudo "$LINUX_USER_NAME"
-        usermod -s /bin/bash "$LINUX_USER_NAME"
-        echo "$LINUX_USER_PASS" | passwd "$LINUX_USER_NAME" --stdin
+        sudo usermod -s /bin/bash "$LINUX_USER_NAME"
+	echo "LINUX_USER_NAME:LINUX_USER_PASS" | sudo chpasswd
         # while :
         # do
         #     sudo passwd "$NEWUSER" && break
         # done
         sudo -u "$LINUX_USER_NAME" sudo bash "$1"
-    # fi
+    fi
 # fi

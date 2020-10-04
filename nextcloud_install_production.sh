@@ -113,12 +113,13 @@ root_check
 cpu_check 1 Nextcloud
 
 # Download needed libraries before execution of the first script
-mkdir -p "$SCRIPTS"
+# mkdir -p "$SCRIPTS"
 #download_script GITHUB_REPO lib
 #download_script STATIC fetch_lib
 
 # Set locales
-run_script ADDONS locales
+# run_script ADDONS locales
+. static/locales.sh
 
 # Offer to use archive.ubuntu.com
 # FFT: Not needed right now
