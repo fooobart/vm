@@ -3,7 +3,7 @@
 true
 SCRIPT_NAME="Add CLI User"
 # shellcheck source=lib.sh
-. <(curl -sL https://raw.githubusercontent.com/fooobart/vm/master/lib.sh)
+. ../lib.sh
 
 # T&M Hansson IT AB © - 2020, https://www.hanssonit.se/
 
