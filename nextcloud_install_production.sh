@@ -131,7 +131,7 @@ run_script ADDONS locales
 # Create new current user
 #download_script STATIC adduser
 bash $SCRIPTS/adduser.sh "nextcloud_install_production.sh"
-rm -f $SCRIPTS/adduser.sh
+#rm -f $SCRIPTS/adduser.sh
 
 # Check distribution and version
 if ! version 20.04 "$DISTRO" 20.04.6
