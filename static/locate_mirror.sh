@@ -6,7 +6,7 @@
 true
 SCRIPT_NAME="Locate Mirror"
 # shellcheck source=lib.sh
-. <(curl -sL https://raw.githubusercontent.com/nextcloud/vm/master/lib.sh)
+. lib.sh
 
 # Must be root
 root_check
